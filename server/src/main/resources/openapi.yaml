@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  description: Track click events on a webpage and provide data for analytics
+  title: Clicksteam events service
+  version: 1.0.11
+servers:
+- url: https://localhost/api/v3
+tags:
+- description: "Event is an activity performed by user on a web page. This is usually\
+    \ a click, drag, copy action."
+  name: Event
+paths:
+  /event/_create:
+    post:
+      description: Create a new event
+      operationId: createEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+        description: Create a new Trip in the system
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+          description: Successful operation
+      summary: Create a new event based on the required set of parameters
+      tags:
+      - Event
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Event
+  /event/_search:
+    get:
+      description: Search events based on multiple filters
+      operationId: searchEvents
+      parameters:
+      - explode: false
+        in: header
+        name: X-authToken
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: Unique id to be considered for filter
+        explode: true
+        in: query
+        name: eventId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Page URL that needs to be considered for filter
+        explode: true
+        in: query
+        name: pageURL
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/EventResponse'
+                type: array
+          description: successful operation
+      summary: Find events using supported parameters
+      tags:
+      - Event
+      x-accepts: application/json
+      x-tags:
+      - tag: Event
+components:
+  schemas:
+    EventRequest:
+      example:
+        elementId: elementId
+        pointer: pointer
+        elementText: elementText
+        pageURL: pageURL
+        id: id
+        elementClass: elementClass
+        type: type
+        elementName: elementName
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        pointer:
+          type: string
+        pageURL:
+          type: string
+        elementClass:
+          type: string
+        elementId:
+          type: string
+        elementName:
+          type: string
+        elementText:
+          type: string
+      type: object
+    EventResponse:
+      example:
+        eventRequest:
+          elementId: elementId
+          pointer: pointer
+          elementText: elementText
+          pageURL: pageURL
+          id: id
+          elementClass: elementClass
+          type: type
+          elementName: elementName
+      properties:
+        eventRequest:
+          $ref: '#/components/schemas/EventRequest'
+      type: object
+    ACK:
+      example:
+        id: 116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1
+        responseMessage: Update is succesful
+        responseCode: CODE-123
+      properties:
+        id:
+          description: Id of the entity that is created or updated
+          example: 116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1
+          type: string
+        responseMessage:
+          example: Update is succesful
+          type: string
+        responseCode:
+          example: CODE-123
+          type: string
+      type: object

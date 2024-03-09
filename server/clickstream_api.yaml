@@ -20,7 +20,7 @@ paths:
       description: Create a new event
       operationId: createEvent
       requestBody:
-        description: Create a new Trip in the system
+        description: Create a new event in the system
         content:
           application/json:
             schema:
