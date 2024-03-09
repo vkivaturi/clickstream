@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Clicksteam events service
+  description: |-
+    Track click events on a webpage and provide data for analytics
+  version: 1.0.11
+servers:
+  - url: https://localhost/api/v3
+
+tags:
+  - name: Event
+    description: Event is an activity performed by user on a web page. This is usually a click, drag, copy action.
+
+paths:
+  /event/_create:
+    post:
+      tags:
+        - Event
+      summary: Create a new event based on the required set of parameters
+      description: Create a new event
+      operationId: createEvent
+      requestBody:
+        description: Create a new Trip in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+  /event/_search:
+    get:
+      tags:
+        - Event
+      summary: Find events using supported parameters
+      description: Search events based on multiple filters
+      operationId: searchEvents
+      parameters:
+        - name: X-authToken
+          in: header
+          schema:
+            type: string
+        - name: eventId
+          in: query
+          description: Unique id to be considered for filter
+          required: false
+          schema:
+            type: string
+        - name: pageURL
+          in: query
+          description: Page URL that needs to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventResponse'
+
+components:
+  schemas:
+    EventRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        pointer:
+          type: string
+        pageURL:
+          type: string
+        elementClass:
+          type: string
+        elementId:
+          type: string
+        elementName:
+          type: string
+        elementText:
+          type: string
+
+    EventResponse:
+      type: object
+      properties:
+        eventRequest:
+          $ref: '#/components/schemas/EventRequest'
+
+    ACK:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the entity that is created or updated
+          example: 116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1
+        responseMessage:
+          type: string
+          example: Update is succesful
+        responseCode:
+          type: string
+          example: CODE-123
