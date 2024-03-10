@@ -35,3 +35,5 @@ docker build --build-arg JAR_FILE=openapi-spring-1.0.11.jar -t clickstreamservic
 
 # Docker run
 docker run -d --env-file env.txt -p 8080:8080 clickstreamservice
+# Docker run - in case a volume of host has to be mounted for the container to access
+docker run -d --env-file env.txt -p 8080:8080 -v /root/projects/sqlite-data/:/root/projects/sqlite-data/ clickstreamservice
