@@ -20,7 +20,7 @@ paths:
       description: Create a new event
       operationId: createEvent
       requestBody:
-        description: Create a new event in the system
+        description: Create a new Event in the system
         content:
           application/json:
             schema:
@@ -73,8 +73,6 @@ components:
     EventRequest:
       type: object
       properties:
-        id:
-          type: string
         type:
           type: string
         pointer:
@@ -93,8 +91,24 @@ components:
     EventResponse:
       type: object
       properties:
-        eventRequest:
-          $ref: '#/components/schemas/EventRequest'
+        id:
+          type: string
+        type:
+          type: string
+        pointer:
+          type: string
+        pageURL:
+          type: string
+        elementClass:
+          type: string
+        elementId:
+          type: string
+        elementName:
+          type: string
+        elementText:
+          type: string
+        createdTime:
+          type: string
 
     ACK:
       type: object

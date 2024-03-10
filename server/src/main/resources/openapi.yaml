@@ -19,7 +19,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EventRequest'
-        description: Create a new Trip in the system
+        description: Create a new Event in the system
         required: true
       responses:
         "200":
@@ -86,6 +86,32 @@ components:
         pointer: pointer
         elementText: elementText
         pageURL: pageURL
+        elementClass: elementClass
+        type: type
+        elementName: elementName
+      properties:
+        type:
+          type: string
+        pointer:
+          type: string
+        pageURL:
+          type: string
+        elementClass:
+          type: string
+        elementId:
+          type: string
+        elementName:
+          type: string
+        elementText:
+          type: string
+      type: object
+    EventResponse:
+      example:
+        elementId: elementId
+        pointer: pointer
+        elementText: elementText
+        createdTime: createdTime
+        pageURL: pageURL
         id: id
         elementClass: elementClass
         type: type
@@ -107,21 +133,8 @@ components:
           type: string
         elementText:
           type: string
-      type: object
-    EventResponse:
-      example:
-        eventRequest:
-          elementId: elementId
-          pointer: pointer
-          elementText: elementText
-          pageURL: pageURL
-          id: id
-          elementClass: elementClass
-          type: type
-          elementName: elementName
-      properties:
-        eventRequest:
-          $ref: '#/components/schemas/EventRequest'
+        createdTime:
+          type: string
       type: object
     ACK:
       example:

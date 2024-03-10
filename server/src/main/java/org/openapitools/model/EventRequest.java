@@ -18,10 +18,8 @@ import javax.annotation.Generated;
  * EventRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-09T15:26:21.145933100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-09T19:41:12.483939300+05:30[Asia/Calcutta]")
 public class EventRequest {
-
-  private String id;
 
   private String type;
 
@@ -36,26 +34,6 @@ public class EventRequest {
   private String elementName;
 
   private String elementText;
-
-  public EventRequest id(String id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Get id
-   * @return id
-  */
-  
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("id")
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
 
   public EventRequest type(String type) {
     this.type = type;
@@ -206,8 +184,7 @@ public class EventRequest {
       return false;
     }
     EventRequest eventRequest = (EventRequest) o;
-    return Objects.equals(this.id, eventRequest.id) &&
-        Objects.equals(this.type, eventRequest.type) &&
+    return Objects.equals(this.type, eventRequest.type) &&
         Objects.equals(this.pointer, eventRequest.pointer) &&
         Objects.equals(this.pageURL, eventRequest.pageURL) &&
         Objects.equals(this.elementClass, eventRequest.elementClass) &&
@@ -218,14 +195,13 @@ public class EventRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, type, pointer, pageURL, elementClass, elementId, elementName, elementText);
+    return Objects.hash(type, pointer, pageURL, elementClass, elementId, elementName, elementText);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class EventRequest {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    pointer: ").append(toIndentedString(pointer)).append("\n");
     sb.append("    pageURL: ").append(toIndentedString(pageURL)).append("\n");

@@ -1,5 +1,9 @@
 package com.clickstream.controller;
 
+import com.clickstream.service.EventService;
+import com.clickstream.util.ClickstreamAPIUtil;
+import com.clickstream.util.Constants;
+import com.clickstream.util.JsonUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -12,6 +16,8 @@ import org.openapitools.api.EventApi;
 import org.openapitools.model.ACK;
 import org.openapitools.model.EventRequest;
 import org.openapitools.model.EventResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +35,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("${openapi.clicksteamEventsService.base-path:/api/v3}")
 public class EventController implements EventApi {
+    Logger logger = LoggerFactory.getLogger(EventController.class);
     private final NativeWebRequest request;
     @Autowired
     public EventController(NativeWebRequest request) {
@@ -38,20 +45,31 @@ public class EventController implements EventApi {
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
     }
+
+    @Autowired
+    EventService eventService;
+
     public ResponseEntity<ACK> createEvent(
             @Parameter(name = "EventRequest", description = "Create a new Trip in the system", required = true) @Valid @RequestBody EventRequest eventRequest
     ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : \"116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1\", \"responseMessage\" : \"Update is succesful\", \"responseCode\" : \"CODE-123\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        logger.info("## createEvent is invoked");
 
+        String eventId = eventService.createEvent(eventRequest);
+        //Initialise response object
+        ACK ack = new ACK();
+
+        if (eventId != null) {
+            ack.setId(eventId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            ClickstreamAPIUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            ClickstreamAPIUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -69,15 +87,9 @@ public class EventController implements EventApi {
             @Parameter(name = "eventId", description = "Unique id to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "eventId", required = false) String eventId,
             @Parameter(name = "pageURL", description = "Page URL that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageURL", required = false) String pageURL
     ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"eventRequest\" : { \"elementId\" : \"elementId\", \"pointer\" : \"pointer\", \"elementText\" : \"elementText\", \"pageURL\" : \"pageURL\", \"id\" : \"id\", \"elementClass\" : \"elementClass\", \"type\" : \"type\", \"elementName\" : \"elementName\" } }, { \"eventRequest\" : { \"elementId\" : \"elementId\", \"pointer\" : \"pointer\", \"elementText\" : \"elementText\", \"pageURL\" : \"pageURL\", \"id\" : \"id\", \"elementClass\" : \"elementClass\", \"type\" : \"type\", \"elementName\" : \"elementName\" } } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        logger.info("## searchEvents is invoked");
+        List<EventResponse> events = eventService.fetchEvents(eventId);
+        ClickstreamAPIUtil.setResponse(request, JsonUtil.getJsonFromObject(events));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

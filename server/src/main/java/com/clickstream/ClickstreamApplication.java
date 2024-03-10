@@ -1,7 +1,9 @@
 package com.clickstream;
 
+import com.clickstream.data.dao.TableSetup;
 import com.fasterxml.jackson.databind.Module;
 import org.openapitools.jackson.nullable.JsonNullableModule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,10 +21,12 @@ import java.util.concurrent.Executor;
         basePackages = { "com.clickstream"},
         nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
+
 @EnableAsync
 public class ClickstreamApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(ClickstreamApplication.class, args);
     }
     @Bean(name = "com.clickstream.ClickstreamApplication.jsonNullableModule")

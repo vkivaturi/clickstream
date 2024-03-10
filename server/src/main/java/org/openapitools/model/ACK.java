@@ -18,7 +18,7 @@ import javax.annotation.Generated;
  * ACK
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-09T15:26:21.145933100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-09T19:41:12.483939300+05:30[Asia/Calcutta]")
 public class ACK {
 
   private String id;

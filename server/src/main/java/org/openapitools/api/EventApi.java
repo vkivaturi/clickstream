@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-09T15:26:21.145933100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-03-09T19:41:12.483939300+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Event", description = "Event is an activity performed by user on a web page. This is usually a click, drag, copy action.")
 public interface EventApi {
@@ -47,7 +47,7 @@ public interface EventApi {
      * POST /event/_create : Create a new event based on the required set of parameters
      * Create a new event
      *
-     * @param eventRequest Create a new Trip in the system (required)
+     * @param eventRequest Create a new Event in the system (required)
      * @return Successful operation (status code 200)
      */
     @Operation(
@@ -68,7 +68,7 @@ public interface EventApi {
         consumes = { "application/json" }
     )
     default ResponseEntity<ACK> createEvent(
-        @Parameter(name = "EventRequest", description = "Create a new Trip in the system", required = true) @Valid @RequestBody EventRequest eventRequest
+        @Parameter(name = "EventRequest", description = "Create a new Event in the system", required = true) @Valid @RequestBody EventRequest eventRequest
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -117,7 +117,7 @@ public interface EventApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"eventRequest\" : { \"elementId\" : \"elementId\", \"pointer\" : \"pointer\", \"elementText\" : \"elementText\", \"pageURL\" : \"pageURL\", \"id\" : \"id\", \"elementClass\" : \"elementClass\", \"type\" : \"type\", \"elementName\" : \"elementName\" } }, { \"eventRequest\" : { \"elementId\" : \"elementId\", \"pointer\" : \"pointer\", \"elementText\" : \"elementText\", \"pageURL\" : \"pageURL\", \"id\" : \"id\", \"elementClass\" : \"elementClass\", \"type\" : \"type\", \"elementName\" : \"elementName\" } } ]";
+                    String exampleString = "[ { \"elementId\" : \"elementId\", \"pointer\" : \"pointer\", \"elementText\" : \"elementText\", \"createdTime\" : \"createdTime\", \"pageURL\" : \"pageURL\", \"id\" : \"id\", \"elementClass\" : \"elementClass\", \"type\" : \"type\", \"elementName\" : \"elementName\" }, { \"elementId\" : \"elementId\", \"pointer\" : \"pointer\", \"elementText\" : \"elementText\", \"createdTime\" : \"createdTime\", \"pageURL\" : \"pageURL\", \"id\" : \"id\", \"elementClass\" : \"elementClass\", \"type\" : \"type\", \"elementName\" : \"elementName\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
